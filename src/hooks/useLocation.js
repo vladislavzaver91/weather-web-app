@@ -8,6 +8,7 @@ export const useLocation = () => {
     const [daysWeatherLocationData, setDaysWeatherLocationData] = useState(null);
     const [cityLocationData, setCityLocationData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const getUserLocation = useCallback(() => {
         if ('geolocation' in navigator) {
@@ -21,6 +22,7 @@ export const useLocation = () => {
                         setCityLocationData(data);
                     })
                     .catch((error) => {
+                        setHasError(true);
                         console.error('Ошибка при запросе к Nominatim:', error);
                     });
                 
@@ -30,6 +32,7 @@ export const useLocation = () => {
                         setWeatherLocationData(data);
                     })
                     .catch((error) => {
+                        setHasError(true);
                         console.error('Ошибка при запросе к OpenWeatherMap:', error);
                     });
                 
@@ -43,6 +46,7 @@ export const useLocation = () => {
                         setIsLoading(false);
                     })
                     .catch((error) => {
+                        setHasError(true);
                         console.error('Ошибка при запросе по дням к OpenWeatherMap:', error);
                     });
             })
@@ -55,6 +59,8 @@ export const useLocation = () => {
         setIsLoading,
         searchQuery,
         setSearchQuery,
+        hasError,
+        setHasError,
         hasLocationData,
         weatherLocationData,
         daysWeatherLocationData,
