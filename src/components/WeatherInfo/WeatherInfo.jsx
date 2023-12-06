@@ -8,6 +8,7 @@ import { Loader } from "components/Loader";
 import { WeatherDataView } from "components/WeatherDataView";
 import styled from "@emotion/styled";
 import { NotFound } from "components/NotFound";
+import { useLocation } from "hooks/useLocation";
 
 export const WeatherInfo = ({ searchQuery }) => {
     const [weatherData, setWeatherData] = useState(null);
@@ -15,6 +16,8 @@ export const WeatherInfo = ({ searchQuery }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { weatherHistory, addNewQuery } = useWeatherHistory();
     const sliderRef = useRef();
+
+    const { hasError } = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,9 +73,8 @@ export const WeatherInfo = ({ searchQuery }) => {
                         </WeatherWrapper>
                     )}
                 </>
-            ) : !isLoading && (
-                <NotFound />
-            )}
+            ) : hasError && (<NotFound />)
+            }
         </div>
     )
 };
