@@ -62,7 +62,6 @@ updateCurrentWeatherCode(weatherCode);
 };
 
 const Section = styled.div`
-margin: 0 auto;
 padding: 32px;
 @media screen and (min-width: 1200px) {
   padding-left: 0;

@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from 'react-toastify';
 import { styled, alpha } from '@mui/material/styles';
 import {InputBase, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,7 +9,7 @@ export const SeacrhForm = ({ onSubmit }) => {
         evt.preventDefault();
         const searchQuery = evt.currentTarget.elements.searchQuery.value;
         if (!searchQuery) {
-            console.log('Please, enter your request');
+            return toast.info('Please, enter your request');
         }
         onSubmit(searchQuery);
         evt.currentTarget.reset();

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_NOMINATIUM_BASE_API_URL
+const BASE_URL = 'https://nominatim.openstreetmap.org/reverse'
 
 export const fetchCityLocation = async (latitude, longitude) => {
     const url = `${BASE_URL}?format=json&accept-language=en&lat=${latitude}&lon=${longitude}&zoom=13`;

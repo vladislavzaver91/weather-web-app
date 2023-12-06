@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from "@emotion/styled";
-import { AppBar, Toolbar, Box, FormControl } from '@mui/material';
+import { AppBar, Toolbar, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { muiIcons } from 'utils/icons';
 import { SeacrhForm } from 'components/SearchForm'; 
 
 export const SearchAppBar = ({ searchQuery, getUserLocation, setIsLoading, isLoading }) => {
-
     const handleClick = () => {
         getUserLocation();
         setIsLoading(true);
