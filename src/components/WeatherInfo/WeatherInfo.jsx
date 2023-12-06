@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { toast } from 'react-toastify';
 import { fetchByLocationName, fetchCallFiveDay } from "services";
 import { useWeatherHistory } from "hooks";
 import { WeatherDaysDataList } from "components/WeatherDaysDataList";
@@ -6,6 +7,7 @@ import { WeatherHistorySlider } from "components/WeatherHistorySlider";
 import { Loader } from "components/Loader";
 import { WeatherDataView } from "components/WeatherDataView";
 import styled from "@emotion/styled";
+import { NotFound } from "components/NotFound";
 
 export const WeatherInfo = ({ searchQuery }) => {
     const [weatherData, setWeatherData] = useState(null);
@@ -27,7 +29,7 @@ export const WeatherInfo = ({ searchQuery }) => {
                 const { list } = await fetchCallFiveDay(searchQuery);
 
                 if (weatherResult.length === 0) {
-                    console.log('Unfortunately, your search returned no results.');
+                    return toast.info('Unfortunately, your search returned no results.');
                 }
 
                 setWeatherData(weatherResult);
@@ -41,7 +43,7 @@ export const WeatherInfo = ({ searchQuery }) => {
                 };
                 
             } catch (error) {
-                console.log(`There were no results found for "${searchQuery}"`);
+                return toast.error(`There were no results found for "${searchQuery}"`);
             } finally {
                 setIsLoading(false);
             };
@@ -63,13 +65,13 @@ export const WeatherInfo = ({ searchQuery }) => {
                             <WeatherHistorySlider weatherHistory={weatherHistory} sliderRef={sliderRef} />
                         </WeatherHistoryWrapper>
                     ) : (
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <WeatherWrapper>
                             <WeatherDaysDataList weatherData={fewDaysWeatherData} />
-                        </div>
+                        </WeatherWrapper>
                     )}
                 </>
             ) : !isLoading && (
-                <div>Что-то пошло не так...</div>
+                <NotFound />
             )}
         </div>
     )
@@ -80,5 +82,12 @@ const WeatherHistoryWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+}
+`;
+
+const WeatherWrapper = styled.div`
+    @media screen and (min-width: 768px) {
+    display: flex;
+    justify-content: center;
 }
 `;
