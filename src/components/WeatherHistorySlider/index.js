@@ -1,0 +1,1 @@
+export { WeatherHistorySlider } from './WeatherHistorySlider';

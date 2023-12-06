@@ -1,0 +1,1 @@
+export { WeatherDaysDataList } from './WeatherDaysDataList';
