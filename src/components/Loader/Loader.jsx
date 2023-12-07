@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Puff } from "react-loader-spinner";
 
-export const Loader = (visible) => {
+export const Loader = ({visible}) => {
     return (
         <Spinner>
             <Puff
