@@ -131,7 +131,6 @@ export const App = () => {
                 pauseOnHover
                 theme="light"
             />
-            <Signature>VladZaver2023&#169;</Signature>
         </Container>
     )
 };
@@ -168,10 +167,3 @@ const WeatherHistoryWrapper = styled.div`
     gap: 20px;
 }
 `;
-
-const Signature = styled.p`
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.36;
-    color: #ffffff;
-`
