@@ -6,18 +6,16 @@ import { WeatherDaysDataList } from "components/WeatherDaysDataList";
 import { WeatherHistorySlider } from "components/WeatherHistorySlider";
 import { Loader } from "components/Loader";
 import { WeatherDataView } from "components/WeatherDataView";
-import styled from "@emotion/styled";
 import { NotFound } from "components/NotFound";
-import { useLocation } from "hooks/useLocation";
+import styled from "@emotion/styled";
 
-export const WeatherInfo = ({ searchQuery }) => {
+export const WeatherInfo = ({ searchQuery, hasError, setHasError }) => {
     const [weatherData, setWeatherData] = useState(null);
     const [fewDaysWeatherData, setFewDaysWeatherData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { weatherHistory, addNewQuery } = useWeatherHistory();
     const sliderRef = useRef();
-
-    const { hasError } = useLocation();
+    const hasErrorRef = useRef(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,9 +23,7 @@ export const WeatherInfo = ({ searchQuery }) => {
                 if (!searchQuery) {
                     return;
                 }
-
                 setIsLoading(true);
-
                 const weatherResult = await fetchByLocationName(searchQuery);
                 const { list } = await fetchCallFiveDay(searchQuery);
 
@@ -36,7 +32,6 @@ export const WeatherInfo = ({ searchQuery }) => {
                 }
 
                 setWeatherData(weatherResult);
-
                 const filteredFewDaysWeatherData = list.filter((item, index) => index % 2 === 0);
                 setFewDaysWeatherData(filteredFewDaysWeatherData);
                 addNewQuery(searchQuery, weatherResult);
@@ -46,15 +41,18 @@ export const WeatherInfo = ({ searchQuery }) => {
                 };
                 
             } catch (error) {
-                return toast.error(`There were no results found for "${searchQuery}"`);
+                if (!hasErrorRef.current) {
+                    hasErrorRef.current = true;
+                    setHasError(true);
+                    return toast.error(`There were no results found for "${searchQuery}"`);
+                }
             } finally {
                 setIsLoading(false);
-            };
+            }
         };
 
         fetchData();
-        console.log('WeatherInfo was re-rendered');
-    }, [addNewQuery, searchQuery]);
+    }, [addNewQuery, searchQuery, setHasError]);
 
     return (
         <div>

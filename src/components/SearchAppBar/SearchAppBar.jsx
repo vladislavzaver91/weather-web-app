@@ -5,10 +5,10 @@ import { LoadingButton } from '@mui/lab';
 import { muiIcons } from 'utils/icons';
 import { SeacrhForm } from 'components/SearchForm'; 
 
-export const SearchAppBar = ({ searchQuery, getUserLocation, setIsLoading, isLoading }) => {
+export const SearchAppBar = ({ searchQuery, setIsLoading, isLoading }) => {
     const handleClick = () => {
-        getUserLocation();
         setIsLoading(true);
+        window.location.reload();
     };
 
     return (

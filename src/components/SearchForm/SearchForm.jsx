@@ -23,7 +23,7 @@ export const SeacrhForm = ({ onSubmit }) => {
                 </SearchIconWrapper>
                 <StyledInputBase
                     name="searchQuery"
-                    placeholder="Search location"
+                    placeholder="Search"
                     inputProps={{ 'aria-label': 'search' }}
                 />
                 <BtnSubmit variant="contained" type="submit">Search</BtnSubmit>
@@ -56,7 +56,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     [theme.breakpoints.down(768)]: {
-        padding: theme.spacing(0, 1), // Дополнительный отступ при маленьком экране
+        padding: theme.spacing(0, 1),
     },
 }));
 
@@ -96,8 +96,8 @@ const IconSearch = styled(SearchIcon)`
 `;
 
 const BtnSubmit = styled(Button)`
-    background-color: #AEB5B9;; /* Цвет фона */
-    color: white; /* Цвет текста */
+    background-color: #AEB5B9;
+    color: white;
     @media screen and (max-width: 767px) {
         padding: 4px 8px;
         min-width: 50px;
@@ -105,7 +105,7 @@ const BtnSubmit = styled(Button)`
     }
     &:hover,
     &:focus {
-        background-color: #888c8f;; /* Цвет фона при наведении */
+        background-color: #888c8f;
     }
     &:active {
         box-shadow: inset 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.12);

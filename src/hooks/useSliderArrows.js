@@ -13,8 +13,8 @@ const CustomArrow = ({ direction, onClick }) => (
 );
 
 const ArrowLeftIcon = styled(muiIcons.KeyboardDoubleArrowLeftOutlinedIcon)`
-width: 18px;
-height: 18px;
+width: 24px;
+height: 24px;
 color: #00CED1;
 cursor: pointer;
 @media screen and (min-width: 768px) {
@@ -28,8 +28,8 @@ height: 40px;
 `;
 
 const ArrowRightIcon = styled(muiIcons.KeyboardDoubleArrowRightRoundedIcon)`
-width: 18px;
-height: 18px;
+width: 24px;
+height: 24px;
 color: #00CED1;
 cursor: pointer;
 @media screen and (min-width: 768px) {

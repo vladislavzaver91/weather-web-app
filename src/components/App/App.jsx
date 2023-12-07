@@ -1,25 +1,25 @@
-import styled from '@emotion/styled';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ToastContainer, Zoom } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { SearchAppBar } from "components/SearchAppBar";
 import { WeatherInfo } from "components/WeatherInfo";
-// import { fetchByLocationCoords, fetchCallFiveDayByCoords, fetchCityLocation } from "services";
 import { Loader } from "components/Loader";
 import { WeatherDaysDataList } from 'components/WeatherDaysDataList';
 import { WeatherDataView } from 'components/WeatherDataView';
+import { WeatherHistorySlider } from 'components/WeatherHistorySlider';
+import { fetchByLocationCoords, fetchCallFiveDayByCoords, fetchCityLocation } from "services";
 import { useWeatherImages } from "contexts";
-import { useLocation } from 'hooks/useLocation';
+import { useWeatherHistory } from 'hooks';
+import styled from '@emotion/styled';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-    // const [searchQuery, setSearchQuery] = useState('');
-    // const [hasLocationData, setHasLocationData] = useState(false);
-    // const [weatherLocationData, setWeatherLocationData] = useState(null);
-    // const [daysWeatherLocationData, setDaysWeatherLocationData] = useState(null);
-    // const [cityLocationData, setCityLocationData] = useState(null);
-    // const [isLoading, setIsLoading] = useState(false);
-
-    const { getUserLocation, isLoading, setIsLoading, searchQuery, setSearchQuery, hasLocationData, weatherLocationData, daysWeatherLocationData, cityLocationData } = useLocation();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [hasLocationData, setHasLocationData] = useState(false);
+    const [weatherLocationData, setWeatherLocationData] = useState(null);
+    const [daysWeatherLocationData, setDaysWeatherLocationData] = useState(null);
+    const [cityLocationData, setCityLocationData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const [backgroundImg, setBackgroundImg] = useState({
         backgroundImage: '',
@@ -30,51 +30,58 @@ export const App = () => {
     });
     const { weatherImages, currentWeatherCode } = useWeatherImages();
 
-    // const getUserLocation = () => {
-    //     if ('geolocation' in navigator) {
-    //         setIsLoading(true);
-    //         navigator.geolocation.getCurrentPosition((position) => {
-    //             const { latitude, longitude } = position.coords;
+    const { weatherHistory } = useWeatherHistory();
+    const sliderRef = useRef();
 
-    //             fetchCityLocation(latitude, longitude)
-    //                 .then((data) => {
-    //                     // console.log('Результат геокодирования Nominatim:', data);
-    //                     setCityLocationData(data);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error('Ошибка при запросе к Nominatim:', error);
-    //                 });
-                
-    //             fetchByLocationCoords(latitude, longitude)
-    //                 .then((data) => {
-    //                     // console.log('Результат геокодирования OpenWeatherMap:', data);
-    //                     setWeatherLocationData(data);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error('Ошибка при запросе к OpenWeatherMap:', error);
-    //                 });
-                
-    //             fetchCallFiveDayByCoords(latitude, longitude)
-    //                 .then(({ list }) => {
-    //                     // console.log('Результат геокодирования по дням OpenWeatherMap:', list);
-    //                     const filteredDaysWeatherLocation = list.filter((item, index) => index % 2 === 0);
-    //                     setDaysWeatherLocationData(filteredDaysWeatherLocation);
-    //                     setHasLocationData(true);
-    //                     setSearchQuery('');
-    //                     setIsLoading(false);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error('Ошибка при запросе по дням к OpenWeatherMap:', error);
-    //                 });
-    //         })
-    //     }
-    // };
+    const getUserLocation = () => {
+        if ('geolocation' in navigator) {
+            setIsLoading(true);
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+
+                fetchCityLocation(latitude, longitude)
+                    .then((data) => {
+                        setCityLocationData(data);
+                    })
+                    .catch((error) => {
+                        setHasError(true);
+                        console.error('Ошибка при запросе к Nominatim:', error);
+                    });
+                fetchByLocationCoords(latitude, longitude)
+                    .then((data) => {
+                        setWeatherLocationData(data);
+                    })
+                    .catch((error) => {
+                        setHasError(true);
+                        console.error('Ошибка при запросе к OpenWeatherMap:', error);
+                    });
+                fetchCallFiveDayByCoords(latitude, longitude)
+                    .then(({ list }) => {
+                        const filteredDaysWeatherLocation = list.filter((item, index) => index % 2 === 0);
+                        setDaysWeatherLocationData(filteredDaysWeatherLocation);
+                        setHasLocationData(true);
+                        setSearchQuery('');
+                        setIsLoading(false);
+                    })
+                    .catch((error) => {
+                        setHasError(true);
+                        console.error('Ошибка при запросе по дням к OpenWeatherMap:', error);
+                    });
+            })
+        }
+    };
 
     useEffect(() => {
         if (!hasLocationData) {
             getUserLocation();
         }
     }, [hasLocationData]);
+
+    useEffect(() => {
+        if (sliderRef.current) {
+            sliderRef.current.slickGoTo(0);
+        };
+    }, []);
 
     useEffect(() => {
         const newBackgroundImg = {
@@ -88,24 +95,29 @@ export const App = () => {
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
         };
-
         setBackgroundImg(newBackgroundImg);
     }, [currentWeatherCode, weatherImages]);
 
     return (
         <Container style={backgroundImg}>
-            <SearchAppBar searchQuery={setSearchQuery} getUserLocation={getUserLocation} isLoading={isLoading} setIsLoading={setIsLoading} />
+            <SearchAppBar searchQuery={setSearchQuery} isLoading={isLoading} setIsLoading={setIsLoading} />
             {isLoading && (<Loader visible={isLoading} />)}
             {!isLoading && !searchQuery && hasLocationData ? (
                 <>
                     <WeatherDataView isLocation={hasLocationData} weatherData={weatherLocationData} cityLocation={cityLocationData} />
-                    <WeatherWrapper >
+                    {weatherHistory.length >= 2 ? (
+                        <WeatherHistoryWrapper>
+                            <WeatherDaysDataList weatherData={daysWeatherLocationData} />
+                            <WeatherHistorySlider weatherHistory={weatherHistory} sliderRef={sliderRef} />
+                        </WeatherHistoryWrapper>
+                    ) : (
+                        <WeatherWrapper >
                         <WeatherDaysDataList weatherData={daysWeatherLocationData} />
                     </WeatherWrapper>
-                    
+            )}
                 </>
             ) : (isLoading)}
-            {!isLoading && searchQuery && <WeatherInfo searchQuery={searchQuery} />}
+            {!isLoading && searchQuery && <WeatherInfo searchQuery={searchQuery} hasError={hasError} setHasError={setHasError} />}
             <ToastContainer
                 position="top-center"
                 transition={Zoom}
@@ -123,86 +135,36 @@ export const App = () => {
     )
 };
 
-// без NOMINATIUM
-
-// import styled from '@emotion/styled';
-// import { useState, useEffect } from "react";
-// import { ToastContainer, Zoom } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { SearchAppBar } from "components/SearchAppBar";
-// import { WeatherInfo } from "components/WeatherInfo";
-// import { Loader } from "components/Loader";
-// import { useWeatherImages } from "contexts";
-
-// export const App = () => {
-//     const [backgroundImg, setBackgroundImg] = useState({
-//         backgroundImage: '',
-//         backgroundSize: 'cover',
-//         backgroundRepeat: 'no-repeat',
-//         backgroundPosition: 'center',
-//         backgroundAttachment: 'fixed',
-//     });
-
-//     const [searchQuery, setSearchQuery] = useState('');
-//     const [isLoading, setIsLoading] = useState(false);
-//     const { weatherImages, currentWeatherCode } = useWeatherImages();
-
-//     // console.log(currentWeatherCode);
-//     // console.log(weatherImages[currentWeatherCode]);
-
-//     useEffect(() => {
-//         const newBackgroundImg = {
-//             backgroundImage: `linear-gradient(
-//                 rgba(105, 93, 93, 0.5),
-//                 rgba(105, 93, 93, 0.6),
-//                 rgba(105, 93, 93, 0.8)),
-//                 url(${weatherImages[currentWeatherCode]})`,
-//             backgroundSize: 'cover',
-//             backgroundRepeat: 'no-repeat',
-//             backgroundPosition: 'center',
-//             backgroundAttachment: 'fixed',
-//         };
-
-//         setBackgroundImg(newBackgroundImg);
-//     }, [currentWeatherCode, weatherImages]);
-
-//     return (
-//         <Container style={backgroundImg}>
-//             <SearchAppBar searchQuery={setSearchQuery} isLoading={isLoading} setIsLoading={setIsLoading} />
-//             {isLoading && (<Loader visible={isLoading} />)}
-//             {!isLoading && searchQuery && <WeatherInfo searchQuery={searchQuery} />}
-//             <ToastContainer
-//                 position="top-center"
-//                 transition={Zoom}
-//                 autoClose={3000}
-//                 hideProgressBar={false}
-//                 newestOnTop={false}
-//                 closeOnClick
-//                 rtl={false}
-//                 pauseOnFocusLoss
-//                 draggable
-//                 pauseOnHover
-//                 theme="light"
-//             />
-//         </Container>
-//     )
-// };
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-/* max-width: 1170px; */
     margin: 0 auto;
     padding-left: 15px;
     padding-right: 15px;
-    background-color: grey;
+    background-image: linear-gradient(
+                rgba(105, 93, 93, 0.5),
+                rgba(105, 93, 93, 0.6),
+                rgba(105, 93, 93, 0.8)),
+                url('../../images/clear-sky.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
 `;
 
 const WeatherWrapper = styled.div`
     @media screen and (min-width: 768px) {
     display: flex;
     justify-content: center;
+}
+`;
+
+const WeatherHistoryWrapper = styled.div`
+@media screen and (min-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 `;
 

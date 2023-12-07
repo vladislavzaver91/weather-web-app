@@ -28,7 +28,6 @@ export const WeatherImageProvider = ({ children }) => {
     const [currentWeatherCode, setCurrentWeatherCode] = useState('');
 
     const updateCurrentWeatherCode = useCallback((newWeatherCode) => {
-        console.log('Updating currentWeatherCode:', newWeatherCode);
         setCurrentWeatherCode(newWeatherCode);
     }, []);
 
