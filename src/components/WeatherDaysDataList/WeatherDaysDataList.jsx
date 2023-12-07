@@ -177,6 +177,9 @@ const TextItem = styled.p`
   line-height: 1.17;
   color: #ffffff;
   text-align: center;
+    @media screen and (max-width: 439px) {
+    width: 45px;
+    }
   @media screen and (min-width: 768px) {
     font-size: 10px;
     }

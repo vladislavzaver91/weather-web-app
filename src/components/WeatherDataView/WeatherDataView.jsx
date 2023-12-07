@@ -16,7 +16,7 @@ updateCurrentWeatherCode(weatherCode);
     return (
         <Section>
         <Wrap>
-            <div>
+            <WeatherDataWrapper>
                 
                 {isLocation ? (
                     <CityTitle>{ cityLocation.address.district || cityLocation.address.borough }, { cityLocation.address.village || cityLocation.address.city }, { cityLocation.address.country } </CityTitle>
@@ -33,7 +33,7 @@ updateCurrentWeatherCode(weatherCode);
                     />
                 </div>
                 <Data>{convertedDate}</Data>
-            </div>
+            </WeatherDataWrapper>
             <div>
                 <TextData>
                     <muiIcons.ThermostatIcon sx={{ mr: 1, fontSize: 20 }} />
@@ -72,8 +72,24 @@ padding: 32px;
 const Wrap = styled.div`
     display: flex;
     align-items: center;
+    flex-direction: column;
+    @media screen and (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-around;
+    }
 `;
+
+const WeatherDataWrapper = styled.div`
+    @media screen and (max-width: 767px){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 64px;
+}
+`
 
 const CityTitle = styled.h2`
     font-size: 14px;
@@ -89,18 +105,21 @@ const CityTitle = styled.h2`
 `;
 
 const Weather = styled.p`
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 500;
     line-height: 1.36;
     color: #00CED1;
     text-transform: uppercase;
+            @media screen and (min-width: 768px) {
+    font-size: 16px;
+    }
     @media screen and (min-width: 1200px) {
     font-size: 30px;
     }
 `;
 
 const Temp = styled.p`
-    font-size: 32px;
+    font-size: 38px;
     font-weight: 500;
     line-height: 1.36;
     color: #ffffff;
@@ -111,8 +130,12 @@ const Temp = styled.p`
 `;
 
 const WeatherImg = styled.img`
+    width: 80px;
+    height: 80px;
+    @media screen and (min-width: 768px) {
     width: 60px;
     height: 60px;
+    }
     @media screen and (min-width: 1200px) {
         width: 100px;
         height: 100px;
@@ -120,7 +143,7 @@ const WeatherImg = styled.img`
 `;
 
 const Data = styled.p`
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.17;
     color: #ffffff;
@@ -130,41 +153,24 @@ const Data = styled.p`
 `;
 
 const TextData = styled.p`
-    @media screen and (max-width: 439px) {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
-        font-size: 10px;
-        font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
     line-height: 1.17;
     color: #ffffff;
     text-transform: uppercase;
-    }
-    @media screen and (min-width: 440px) {
-        display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-        font-size: 12px;
-        font-weight: 500;
-    line-height: 1.17;
-    color: #ffffff;
-    text-transform: uppercase;
-    }
     @media screen and (min-width: 768px) {
-        margin-bottom: 10px;
         font-size: 14px;
-        font-weight: 600;
     }
     @media screen and (min-width: 1200px) {
         font-size: 18px;
     }
     & span {
-        margin-left: 3px;
+        margin-left: 7px;
         text-transform: none;
         color: #00CED1;
-        @media screen and (min-width: 440px) {
-    margin-left: 7px;
-    }
     }
     &:last-child {
         margin-bottom: 0;
