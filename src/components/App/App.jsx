@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ToastContainer, Zoom } from 'react-toastify';
+import { ToastContainer, Zoom, toast } from 'react-toastify';
 import { SearchAppBar } from "components/SearchAppBar";
 import { WeatherInfo } from "components/WeatherInfo";
 import { Loader } from "components/Loader";
@@ -32,11 +32,13 @@ export const App = () => {
 
     const { weatherHistory } = useWeatherHistory();
     const sliderRef = useRef();
+    const hasErrorRef = useRef(false);
 
-    const getUserLocation = () => {
-        if ('geolocation' in navigator) {
-            setIsLoading(true);
-            navigator.geolocation.getCurrentPosition((position) => {
+const getUserLocation = () => {
+    if ('geolocation' in navigator) {
+        setIsLoading(true);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
                 const { latitude, longitude } = position.coords;
 
                 fetchCityLocation(latitude, longitude)
@@ -47,6 +49,7 @@ export const App = () => {
                         setHasError(true);
                         console.error('Ошибка при запросе к Nominatim:', error);
                     });
+
                 fetchByLocationCoords(latitude, longitude)
                     .then((data) => {
                         setWeatherLocationData(data);
@@ -55,21 +58,33 @@ export const App = () => {
                         setHasError(true);
                         console.error('Ошибка при запросе к OpenWeatherMap:', error);
                     });
+
                 fetchCallFiveDayByCoords(latitude, longitude)
                     .then(({ list }) => {
                         const filteredDaysWeatherLocation = list.filter((item, index) => index % 2 === 0);
                         setDaysWeatherLocationData(filteredDaysWeatherLocation);
                         setHasLocationData(true);
                         setSearchQuery('');
-                        setIsLoading(false);
                     })
                     .catch((error) => {
                         setHasError(true);
                         console.error('Ошибка при запросе по дням к OpenWeatherMap:', error);
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
                     });
-            })
-        }
-    };
+            },
+            (error) => {
+                if (!hasErrorRef.current) {
+                    hasErrorRef.current = true;
+                    setHasError(true);
+                    return toast.info('Error getting geolocation. Please enable geolocation on your device.');
+                }
+                setIsLoading(false);
+            },
+        );
+    }
+};
 
     useEffect(() => {
         if (!hasLocationData) {
@@ -143,15 +158,7 @@ const Container = styled.div`
     margin: 0 auto;
     padding-left: 15px;
     padding-right: 15px;
-    background-image: linear-gradient(
-                rgba(105, 93, 93, 0.5),
-                rgba(105, 93, 93, 0.6),
-                rgba(105, 93, 93, 0.8)),
-                url('../../images/clear-sky.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
+    background-color: rgb(140, 179, 229);
 `;
 
 const WeatherWrapper = styled.div`
