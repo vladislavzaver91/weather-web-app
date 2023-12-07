@@ -170,6 +170,7 @@ const WeatherHistoryWrapper = styled.div`
 `;
 
 const Signature = styled.p`
+margin-top: auto;
 font-size: 14px; 
 font-weight: 500; 
 line-height: 1.36; 
