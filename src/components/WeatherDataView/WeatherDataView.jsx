@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import { useCountryName, useTimeFormat, useUnixTime } from "hooks";
-import { useWeatherImages } from "contexts";
+import { useWeatherImage } from "contexts";
 import { muiIcons } from "utils/icons";
 
-export const WeatherDataView = ({ weatherData, isLocation, cityLocation }) => {
-    const { updateCurrentWeatherCode } = useWeatherImages();
+export const WeatherDataView = ({ weatherData }) => {
+    const { updateCurrentWeatherCode } = useWeatherImage();
 const weatherCode = weatherData.weather[0].icon;
 updateCurrentWeatherCode(weatherCode);
     const convertedDate = useTimeFormat(new Date(), 'E dd MMMM yyyy, HH:mm');
@@ -17,13 +17,7 @@ updateCurrentWeatherCode(weatherCode);
         <Section>
         <Wrap>
             <WeatherDataWrapper>
-                
-                {isLocation ? (
-                    <CityTitle>{ cityLocation.address.district || cityLocation.address.borough }, { cityLocation.address.village || cityLocation.address.city }, { cityLocation.address.country } </CityTitle>
-                ) : (
                     <CityTitle>{weatherData.name}, {countryName}</CityTitle>
-                )}
-                
                 <Weather>{weatherData.weather[0].description}</Weather>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Temp>{Math.round(weatherData.main.temp)}&#176;</Temp>
