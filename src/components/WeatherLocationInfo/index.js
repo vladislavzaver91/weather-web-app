@@ -1,0 +1,1 @@
+export { WeatherLocationInfo } from './WeatherLocationInfo.jsx';

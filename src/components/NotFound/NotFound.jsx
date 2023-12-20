@@ -15,12 +15,12 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    padding: 15px;
+    padding: 94px 15px 94px 15px;
     @media screen and (min-width: 480px) {
-    width: 480px;
+    max-width: 480px;
 }
 @media screen and (min-width: 768px) {
-    width: 768px;
+    max-width: 768px;
 }
 @media screen and (min-width: 1200px) {
     padding: 94px;
