@@ -37,6 +37,19 @@ import {
     Tab_Snow_night,
     Tab_Mist
 } from 'images';
+import {
+    Clear_sky_icon,
+    Clear_sky_night_icon,
+    Clouds_icon,
+    Few_clouds_icon,
+    Few_clouds_night_icon,
+    Mist_day_icon,
+    Mist_night_icon,
+    Rain_icon,
+    Shower_rain_icon,
+    Snow_icon,
+    Thunderstorm_icon,
+} from 'images/icons';
 
 export const WeatherImageContext = createContext();
 
@@ -113,6 +126,26 @@ export const WeatherImageProvider = ({ children }) => {
             '50n': Mob_Mist,
         }
     });
+    const [weatherIcons] = useState({
+        '01d': Clear_sky_icon,
+        '01n': Clear_sky_night_icon,
+        '02d': Few_clouds_icon,
+        '02n': Few_clouds_night_icon,
+        '03d': Clouds_icon,
+        '03n': Clouds_icon,
+        '04d': Clouds_icon,
+        '04n': Clouds_icon,
+        '09d': Shower_rain_icon,
+        '09n': Shower_rain_icon,
+        '10d': Rain_icon,
+        '10n': Rain_icon,
+        '11d': Thunderstorm_icon,
+        '11n': Thunderstorm_icon,
+        '13d': Snow_icon,
+        '13n': Snow_icon,
+        '50d': Mist_day_icon,
+        '50n': Mist_night_icon,
+    });
 
     const [currentWeatherCode, setCurrentWeatherCode] = useState('');
 
@@ -120,7 +153,7 @@ export const WeatherImageProvider = ({ children }) => {
         setCurrentWeatherCode(newWeatherCode);
     }, []);
 
-    const value = { weatherImages, currentWeatherCode, updateCurrentWeatherCode };
+    const value = { weatherImages, weatherIcons, currentWeatherCode, updateCurrentWeatherCode };
 
     return (
         <WeatherImageContext.Provider value={value}>

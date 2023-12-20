@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { useCountryName, useTimeFormat, useUnixTime } from "hooks";
 import { useWeatherImage } from "contexts";
-import { muiIcons } from "utils/icons";
+// import { muiIcons } from "utils/icons";
+import { Sunrise_icon, Sunset_icon, Thermometer_icon, Wet_icon, Wind_icon } from "images/icons";
 
 export const WeatherDataView = ({ weatherData }) => {
     const { updateCurrentWeatherCode } = useWeatherImage();
@@ -12,6 +13,7 @@ export const WeatherDataView = ({ weatherData }) => {
     const countryName = useCountryName(countryCode);
     const sunriseTime = useUnixTime(weatherData.sys.sunrise);
     const sunsetTime = useUnixTime(weatherData.sys.sunset);
+    const { weatherIcons } = useWeatherImage();
     
     return (
         <Section>
@@ -19,34 +21,34 @@ export const WeatherDataView = ({ weatherData }) => {
                 <WeatherDataWrapper>
                     <CityTitle>{weatherData.name}, {countryName}</CityTitle>
                     <Weather>{weatherData.weather[0].description}</Weather>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <TempWrapper>
                         <Temp>{Math.round(weatherData.main.temp)}&#176;</Temp>
                         <WeatherImg
-                            src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                            src={`${weatherIcons[weatherCode]}`}
                             alt={weatherData.weather[0].description}
                         />
-                    </div>
+                    </TempWrapper>
                     <Data>{convertedDate}</Data>
                 </WeatherDataWrapper>
                 <div>
                     <TextData>
-                        <muiIcons.ThermostatIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Thermometer_icon} alt={Thermometer_icon} />
                         feels like: <span>{Math.round(weatherData.main.temp)}&#176;</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.AirIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Wind_icon} alt={Wind_icon} />
                         wind: <span>{weatherData.wind.speed}  m/s</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WaterDropIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Wet_icon} alt={Wet_icon} />
                         humidity: <span>{weatherData.main.humidity} %</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WbSunnyIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Sunrise_icon} alt={Sunrise_icon} />
                         sunrise: <span>{useTimeFormat(sunriseTime, 'HH:mm')}</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WbTwilightIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Sunset_icon} alt={Sunset_icon} />
                         sunset: <span>{useTimeFormat(sunsetTime, 'HH:mm')}</span>
                     </TextData>
                 </div>
@@ -98,6 +100,12 @@ const CityTitle = styled.h2`
     }
 `;
 
+const TempWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+`;
+
 const Weather = styled.p`
     font-size: 24px;
     font-weight: 500;
@@ -113,6 +121,7 @@ const Weather = styled.p`
 `;
 
 const Temp = styled.p`
+margin-right: 10px;
     font-size: 38px;
     font-weight: 500;
     line-height: 1.36;
@@ -124,15 +133,11 @@ const Temp = styled.p`
 `;
 
 const WeatherImg = styled.img`
-    width: 80px;
-    height: 80px;
-    @media screen and (min-width: 768px) {
     width: 60px;
     height: 60px;
-    }
     @media screen and (min-width: 1200px) {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 `;
 
@@ -169,4 +174,10 @@ const TextData = styled.p`
     &:last-child {
         margin-bottom: 0;
     }
+`;
+
+const IconData = styled.img`
+margin-right: 8px;
+width: 32px;
+height: 32px;
 `;

@@ -4,8 +4,12 @@ import styled from "@emotion/styled";
 import { useSliderArrows } from "hooks";
 import { muiIcons } from "utils/icons";
 import { format, fromUnixTime } from "date-fns";
+import { useWeatherImage } from "contexts";
+import { Umbrella_icon, Wind_icon } from "images/icons";
 
 export const WeatherDaysDataList = ({ weatherData }) => {
+  const { weatherIcons } = useWeatherImage();
+  console.log(weatherData);
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -20,20 +24,21 @@ export const WeatherDaysDataList = ({ weatherData }) => {
       <SliderWrap {...sliderSettings}>
         {weatherData.map((item, index) => {
           const formatedTime = fromUnixTime(item.dt);
+          const weatherCode = item.weather[0].icon;
 
           return (
             <li key={index}>
               <TempItem>{Math.round(item.main.temp)}&#176;</TempItem>
               <ImgItem
-                src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                src={`${weatherIcons[weatherCode]}`}
                 alt={item.weather[0].description}
               />
               <DataItemWrapper>
-                <muiIcons.AirIcon sx={{ fontSize: 20 }} />
+                <IconData src={Wind_icon} alt={Wind_icon} />
                 <p>{item.wind.speed}m/s</p>
               </DataItemWrapper>
               <DataItemWrapper>
-                <muiIcons.ThunderstormIcon sx={{ fontSize: 20 }} />
+                <IconData src={Umbrella_icon} alt={Umbrella_icon} />
                 <p>{item.pop} %</p>
               </DataItemWrapper>
               <TextItem>{format(formatedTime, 'E, HH:mm')}</TextItem>
@@ -144,16 +149,19 @@ const TempItem = styled.p`
 
 const ImgItem = styled.img`
   margin: 0 auto;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   @media screen and (min-width: 1200px) {
   margin-bottom: 5px;
-  width: 65px;
-  height: 65px;
+  width: 50px;
+  height: 50px;
   }
 `;
 
 const DataItemWrapper = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
   margin-bottom: 10px;
   color: #ffffff;
   text-align: center;
@@ -186,4 +194,10 @@ const TextItem = styled.p`
   @media screen and (min-width: 1200px) {
     font-size: 16px;
   }
+`;
+
+const IconData = styled.img`
+margin-bottom: 8px;
+width: 24px;
+height: 24px;
 `;

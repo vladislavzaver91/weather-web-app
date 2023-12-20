@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
+import { useWeatherImage } from "contexts";
 import { useCountryName, useTimeFormat, useUnixTime } from "hooks";
+import { Sunrise_icon, Sunset_icon, Thermometer_icon, Wet_icon, Wind_icon } from "images/icons";
 import { muiIcons } from "utils/icons";
 
 export const WeatherHistoryDataView = ({ weatherData }) => {
@@ -7,6 +9,9 @@ export const WeatherHistoryDataView = ({ weatherData }) => {
     const countryName = useCountryName(countryCode);
     const sunriseTime = useUnixTime(weatherData.sys.sunrise);
     const sunsetTime = useUnixTime(weatherData.sys.sunset);
+    const weatherCode = weatherData.weather[0].icon;
+    const { weatherIcons } = useWeatherImage();
+    console.log(weatherData);
     return (
         <div>
             <CityTitle>{weatherData.name}, {countryName}</CityTitle>
@@ -15,28 +20,28 @@ export const WeatherHistoryDataView = ({ weatherData }) => {
             <WrapTemp>
                 <Temp>{Math.round(weatherData.main.temp)}&#176;</Temp>
                 <WeatherImg
-                    src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                    src={`${weatherIcons[weatherCode]}`}
                     alt={weatherData.weather[0].description}
                 />
                 <div>
                     <TextData>
-                        <muiIcons.ThermostatIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Thermometer_icon} alt={Thermometer_icon} />
                         feels like: <span>{Math.round(weatherData.main.temp)}&#176;</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.AirIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Wind_icon} alt={Wind_icon} />
                         wind: <span>{weatherData.wind.speed}  m/s</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WaterDropIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Wet_icon} alt={Wet_icon} />
                         humidity: <span>{weatherData.main.humidity} %</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WbSunnyIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Sunrise_icon} alt={Sunrise_icon} />
                         sunrise: <span>{useTimeFormat(sunriseTime, 'HH:mm')}</span>
                     </TextData>
                     <TextData>
-                        <muiIcons.WbTwilightIcon sx={{ mr: 1, fontSize: 20 }} />
+                        <IconData src={Sunset_icon} alt={Sunset_icon} />
                         sunset: <span>{useTimeFormat(sunsetTime, 'HH:mm')}</span>
                     </TextData>
                 </div>
@@ -115,12 +120,12 @@ const WeatherImg = styled.img`
     width: 60px;
     height: 60px;
     @media screen and (min-width: 1200px) {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     @media screen and (min-width: 1440px) {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
 `;
 
@@ -148,4 +153,10 @@ const TextData = styled.p`
     &:last-child {
         margin-bottom: 0;
     }
+`;
+
+const IconData = styled.img`
+margin-right: 8px;
+width: 20px;
+height: 20px;
 `;
