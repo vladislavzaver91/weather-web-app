@@ -4,8 +4,10 @@ import { AppBar, Toolbar, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { muiIcons } from 'utils/icons';
 import { SeacrhForm } from 'components/SearchForm'; 
+import { useWeatherContext } from 'contexts';
 
-export const SearchAppBar = ({ searchQuery, setIsLoading, isLoading }) => {
+export const SearchAppBar = () => {
+    const { setIsLoading, isLoading } = useWeatherContext();
     const handleClick = () => {
         setIsLoading(true);
         window.location.reload();
@@ -23,7 +25,7 @@ export const SearchAppBar = ({ searchQuery, setIsLoading, isLoading }) => {
                             <muiIcons.RefreshIcon />
                         </BtnRefresh>
                     </Box>
-                    <SeacrhForm onSubmit={searchQuery} />
+                    <SeacrhForm />
                 </ToolBarWrap>
             </AppBarWrap>
         </Box>
