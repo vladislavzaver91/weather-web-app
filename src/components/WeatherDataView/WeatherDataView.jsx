@@ -5,8 +5,8 @@ import { muiIcons } from "utils/icons";
 
 export const WeatherDataView = ({ weatherData }) => {
     const { updateCurrentWeatherCode } = useWeatherImage();
-const weatherCode = weatherData.weather[0].icon;
-updateCurrentWeatherCode(weatherCode);
+    const weatherCode = weatherData.weather[0].icon;
+    updateCurrentWeatherCode(weatherCode);
     const convertedDate = useTimeFormat(new Date(), 'E dd MMMM yyyy, HH:mm');
     const countryCode = weatherData.sys.country;
     const countryName = useCountryName(countryCode);
@@ -15,43 +15,43 @@ updateCurrentWeatherCode(weatherCode);
     
     return (
         <Section>
-        <Wrap>
-            <WeatherDataWrapper>
+            <Wrap>
+                <WeatherDataWrapper>
                     <CityTitle>{weatherData.name}, {countryName}</CityTitle>
-                <Weather>{weatherData.weather[0].description}</Weather>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Temp>{Math.round(weatherData.main.temp)}&#176;</Temp>
-                    <WeatherImg
-                        src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                        alt={weatherData.weather[0].description}
-                    />
+                    <Weather>{weatherData.weather[0].description}</Weather>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Temp>{Math.round(weatherData.main.temp)}&#176;</Temp>
+                        <WeatherImg
+                            src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                            alt={weatherData.weather[0].description}
+                        />
+                    </div>
+                    <Data>{convertedDate}</Data>
+                </WeatherDataWrapper>
+                <div>
+                    <TextData>
+                        <muiIcons.ThermostatIcon sx={{ mr: 1, fontSize: 20 }} />
+                        feels like: <span>{Math.round(weatherData.main.temp)}&#176;</span>
+                    </TextData>
+                    <TextData>
+                        <muiIcons.AirIcon sx={{ mr: 1, fontSize: 20 }} />
+                        wind: <span>{weatherData.wind.speed}  m/s</span>
+                    </TextData>
+                    <TextData>
+                        <muiIcons.WaterDropIcon sx={{ mr: 1, fontSize: 20 }} />
+                        humidity: <span>{weatherData.main.humidity} %</span>
+                    </TextData>
+                    <TextData>
+                        <muiIcons.WbSunnyIcon sx={{ mr: 1, fontSize: 20 }} />
+                        sunrise: <span>{useTimeFormat(sunriseTime, 'HH:mm')}</span>
+                    </TextData>
+                    <TextData>
+                        <muiIcons.WbTwilightIcon sx={{ mr: 1, fontSize: 20 }} />
+                        sunset: <span>{useTimeFormat(sunsetTime, 'HH:mm')}</span>
+                    </TextData>
                 </div>
-                <Data>{convertedDate}</Data>
-            </WeatherDataWrapper>
-            <div>
-                <TextData>
-                    <muiIcons.ThermostatIcon sx={{ mr: 1, fontSize: 20 }} />
-                    feels like: <span>{Math.round(weatherData.main.temp)}&#176;</span>
-                </TextData>
-                <TextData>
-                    <muiIcons.AirIcon sx={{ mr: 1, fontSize: 20 }} />
-                    wind: <span>{weatherData.wind.speed}  m/s</span>
-                </TextData>
-                <TextData>
-                    <muiIcons.WaterDropIcon sx={{ mr: 1, fontSize: 20 }} />
-                    humidity: <span>{weatherData.main.humidity} %</span>
-                </TextData>
-                <TextData>
-                    <muiIcons.WbSunnyIcon sx={{ mr: 1, fontSize: 20 }} />
-                    sunrise: <span>{useTimeFormat(sunriseTime, 'HH:mm')}</span>
-                </TextData>
-                <TextData>
-                    <muiIcons.WbTwilightIcon sx={{ mr: 1, fontSize: 20 }} />
-                    sunset: <span>{useTimeFormat(sunsetTime, 'HH:mm')}</span>
-                </TextData>
-            </div>
             </Wrap>
-            </Section>
+        </Section>
     );
 };
 
