@@ -4,14 +4,16 @@ import './index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { App } from 'components/App/App';
-import { WeatherImageProvider } from 'contexts';
+import { WeatherContextProvider, WeatherImageProvider } from 'contexts';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <WeatherImageProvider>
+      <WeatherContextProvider>
         <App />
+      </WeatherContextProvider>
     </WeatherImageProvider>
   </React.StrictMode>
 );

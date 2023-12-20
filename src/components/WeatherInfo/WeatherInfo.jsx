@@ -8,11 +8,12 @@ import { Loader } from "components/Loader";
 import { WeatherDataView } from "components/WeatherDataView";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
+import { useWeatherContext } from "contexts";
 
 export const WeatherInfo = ({ searchQuery, hasError, setHasError }) => {
     const [weatherData, setWeatherData] = useState(null);
     const [fewDaysWeatherData, setFewDaysWeatherData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, setIsLoading } = useWeatherContext();
     const { weatherHistory, addNewQuery } = useWeatherHistory();
     const sliderRef = useRef();
     const hasErrorRef = useRef(false);

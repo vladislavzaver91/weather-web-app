@@ -3,15 +3,18 @@ import { toast } from 'react-toastify';
 import { styled, alpha } from '@mui/material/styles';
 import {InputBase, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useWeatherContext } from 'contexts';
 
-export const SeacrhForm = ({ onSubmit }) => {
+export const SeacrhForm = () => {
+    const { setSearchQuery } = useWeatherContext();
+
     const handleSubmit = evt => {
         evt.preventDefault();
-        const searchQuery = evt.currentTarget.elements.searchQuery.value;
-        if (!searchQuery) {
+        const query = evt.currentTarget.elements.query.value;
+        if (!query) {
             return toast.info('Please, enter your request');
         }
-        onSubmit(searchQuery);
+        setSearchQuery(query);
         evt.currentTarget.reset();
     };
 
@@ -22,7 +25,7 @@ export const SeacrhForm = ({ onSubmit }) => {
                     <IconSearch />
                 </SearchIconWrapper>
                 <StyledInputBase
-                    name="searchQuery"
+                    name="query"
                     placeholder="Search"
                     inputProps={{ 'aria-label': 'search' }}
                 />

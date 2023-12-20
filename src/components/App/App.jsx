@@ -84,14 +84,28 @@ import { useWeatherHistory } from 'hooks';
 import styled from '@emotion/styled';
 import 'react-toastify/dist/ReactToastify.css';
 import { useBackgroundImages } from "hooks/useBackgroundImages";
+import { useWeatherContext } from "contexts";
 
 export const App = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [hasLocationData, setHasLocationData] = useState(false);
-  const [weatherLocationData, setWeatherLocationData] = useState(null);
-  const [daysWeatherLocationData, setDaysWeatherLocationData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [hasLocationData, setHasLocationData] = useState(false);
+  // const [weatherLocationData, setWeatherLocationData] = useState(null);
+  // const [daysWeatherLocationData, setDaysWeatherLocationData] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [hasError, setHasError] = useState(false);
+  const { searchQuery,
+    setSearchQuery,
+    hasLocationData,
+    setHasLocationData,
+    weatherLocationData,
+    setWeatherLocationData,
+    daysWeatherLocationData,
+    setDaysWeatherLocationData,
+    isLoading,
+    setIsLoading,
+    hasError,
+    setHasError } = useWeatherContext();
+
   const { weatherHistory } = useWeatherHistory();
   const sliderRef = useRef();
   const hasErrorRef = useRef(false);
@@ -153,7 +167,7 @@ export const App = () => {
 
   return (
     <Container style={backgroundImg}>
-      <SearchAppBar searchQuery={setSearchQuery} isLoading={isLoading} setIsLoading={setIsLoading} />
+      <SearchAppBar />
       {isLoading && (<Loader visible={isLoading} />)}
       {!isLoading && !searchQuery && hasLocationData ? (
         <>
@@ -186,6 +200,41 @@ export const App = () => {
       />
       <Signature>VladZaver2023&#169;</Signature>
     </Container>
+
+    // <Container style={backgroundImg}>
+    //   <SearchAppBar searchQuery={setSearchQuery} isLoading={isLoading} setIsLoading={setIsLoading} />
+    //   {isLoading && (<Loader visible={isLoading} />)}
+    //   {!isLoading && !searchQuery && hasLocationData ? (
+    //     <>
+    //       <WeatherDataView weatherData={weatherLocationData} />
+    //       {weatherHistory.length >= 2 ? (
+    //         <WeatherHistoryWrapper>
+    //           <WeatherDaysDataList weatherData={daysWeatherLocationData} />
+    //           <WeatherHistorySlider weatherHistory={weatherHistory} sliderRef={sliderRef} />
+    //         </WeatherHistoryWrapper>
+    //       ) : (
+    //         <WeatherWrapper >
+    //           <WeatherDaysDataList weatherData={daysWeatherLocationData} />
+    //         </WeatherWrapper>
+    //       )}
+    //     </>
+    //   ) : (isLoading)}
+    //   {!isLoading && searchQuery && <WeatherInfo searchQuery={searchQuery} hasError={hasError} setHasError={setHasError} />}
+    //   <ToastContainer
+    //     position="top-center"
+    //     transition={Zoom}
+    //     autoClose={3000}
+    //     hideProgressBar={false}
+    //     newestOnTop={false}
+    //     closeOnClick
+    //     rtl={false}
+    //     pauseOnFocusLoss
+    //     draggable
+    //     pauseOnHover
+    //     theme="light"
+    //   />
+    //   <Signature>VladZaver2023&#169;</Signature>
+    // </Container>
   )
 };
 
@@ -194,8 +243,7 @@ const Container = styled.div`
     flex-direction: column;
     min-height: 100vh;
     margin: 0 auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 0px 15px 15px 15px;
     background-color: rgb(140, 179, 229);
 `;
 
