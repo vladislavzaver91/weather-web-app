@@ -1,18 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '@emotion/react';
 import './index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { App } from 'components/App/App';
 import { WeatherImageProvider } from 'contexts';
 import reportWebVitals from './reportWebVitals';
+import { theme } from 'constans';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <WeatherImageProvider>
+    <ThemeProvider theme={theme}>
+      <WeatherImageProvider>
         <App />
-    </WeatherImageProvider>
+      </WeatherImageProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

@@ -2,7 +2,6 @@ import React from "react";
 import Slider from "react-slick";
 import styled from "@emotion/styled";
 import { useSliderArrows } from "hooks";
-import { muiIcons } from "utils/icons";
 import { format, fromUnixTime } from "date-fns";
 import { useWeatherImage } from "contexts";
 import { Umbrella_icon, Wind_icon } from "images/icons";
