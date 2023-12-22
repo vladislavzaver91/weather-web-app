@@ -43,9 +43,9 @@ export const useGeolocation = () => {
                     if (!hasErrorRef.current) {
                         hasErrorRef.current = true;
                         setHasError(true);
+                        setIsLoading(false);
                         return toast.info('Error getting geolocation. Please enable geolocation on your device.');
                     }
-                    setIsLoading(false);
                 },
             );
         }

@@ -9,7 +9,7 @@ export const useBackgroundImages = () => {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
+        backgroundAttachment: 'scroll',
     });
     const isSmallScreen = useMediaQuery({ maxWidth: 767 });
     const isMediumScreen = useMediaQuery({ maxWidth: 1199 });
@@ -39,7 +39,7 @@ export const useBackgroundImages = () => {
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
+            backgroundAttachment: 'scroll;',
         };
 
         setBackgroundImg(newBackgroundImg);

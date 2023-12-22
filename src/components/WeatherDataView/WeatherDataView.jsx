@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { useCountryName, useTimeFormat, useUnixTime } from "hooks";
 import { useWeatherImage } from "contexts";
-// import { muiIcons } from "utils/icons";
 import { Sunrise_icon, Sunset_icon, Thermometer_icon, Wet_icon, Wind_icon } from "images/icons";
+import { desktopMixin, tabletMixin, textMixin } from "constans";
 
 export const WeatherDataView = ({ weatherData }) => {
     const { updateCurrentWeatherCode } = useWeatherImage();
@@ -58,23 +58,23 @@ export const WeatherDataView = ({ weatherData }) => {
 };
 
 const Section = styled.div`
-padding: 32px;
-@media screen and (min-width: 1200px) {
-  padding-left: 0;
-  padding-right: 0;
-}
+    padding: 32px;
+    ${desktopMixin(`
+        padding-left: 0;
+        padding-right: 0;
+    `)}
 `;
 
 const Wrap = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    @media screen and (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    }
+    ${tabletMixin(`
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    `)}
 `;
 
 const WeatherDataWrapper = styled.div`
@@ -88,16 +88,14 @@ const WeatherDataWrapper = styled.div`
 `
 
 const CityTitle = styled.h2`
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.36;
-    color: #ffffff;
+    ${textMixin('14px', '700', '1.36')};
+    color: ${props => props.theme.colors.white};
     text-transform: uppercase;
     margin-bottom: 5px;
-    @media screen and (min-width: 1200px) {
-    font-size: 18px;
-    margin-bottom: 10px;
-    }
+    ${desktopMixin(`
+        font-size: 18px;
+        margin-bottom: 10px;
+    `)}
 `;
 
 const TempWrapper = styled.div`
@@ -107,69 +105,61 @@ const TempWrapper = styled.div`
 `;
 
 const Weather = styled.p`
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.36;
-    color: #00CED1;
+    ${textMixin('24px', '500', '1.36')};
+    color: ${props => props.theme.colors.accentColor};
     text-transform: uppercase;
-            @media screen and (min-width: 768px) {
-    font-size: 16px;
-    }
-    @media screen and (min-width: 1200px) {
-    font-size: 30px;
-    }
+    ${tabletMixin(`
+        font-size: 16px;
+    `)}
+    ${desktopMixin(`
+        font-size: 30px;
+    `)}
 `;
 
 const Temp = styled.p`
-margin-right: 10px;
-    font-size: 38px;
-    font-weight: 500;
-    line-height: 1.36;
-    color: #ffffff;
+    ${textMixin('38px', '500', '1.36')};
+    margin-right: 10px;
+    color: ${props => props.theme.colors.white};
     text-transform: uppercase;
-    @media screen and (min-width: 768px) {
+    ${tabletMixin(`
         font-size: 48px;
-    }
+    `)}
 `;
 
 const WeatherImg = styled.img`
     width: 60px;
     height: 60px;
-    @media screen and (min-width: 1200px) {
-        width: 80px;
-        height: 80px;
-    }
+        ${desktopMixin(`
+            width: 80px;
+            height: 80px;
+    `)}
 `;
 
 const Data = styled.p`
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.17;
-    color: #ffffff;
-    @media screen and (min-width: 768px) {
+    ${textMixin()};
+    color: ${props => props.theme.colors.white};
+    ${tabletMixin(`
         font-size: 18px;
-    }
+    `)}
 `;
 
 const TextData = styled.p`
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.17;
-    color: #ffffff;
+    ${textMixin('18px', '600')};
+    color: ${props => props.theme.colors.white};
     text-transform: uppercase;
-    @media screen and (min-width: 768px) {
+    ${tabletMixin(`
         font-size: 14px;
-    }
-    @media screen and (min-width: 1200px) {
+    `)}
+    ${desktopMixin(`
         font-size: 18px;
-    }
+    `)}
     & span {
         margin-left: 7px;
         text-transform: none;
-        color: #00CED1;
+        color: ${props => props.theme.colors.accentColor};
     }
     &:last-child {
         margin-bottom: 0;
@@ -177,7 +167,7 @@ const TextData = styled.p`
 `;
 
 const IconData = styled.img`
-margin-right: 8px;
-width: 32px;
-height: 32px;
+    margin-right: 8px;
+    width: 26px;
+    height: 26px;
 `;

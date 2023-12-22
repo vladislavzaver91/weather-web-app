@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import { useWeatherImage } from "contexts";
 import { useCountryName, useTimeFormat, useUnixTime } from "hooks";
 import { Sunrise_icon, Sunset_icon, Thermometer_icon, Wet_icon, Wind_icon } from "images/icons";
-import { muiIcons } from "utils/icons";
 
 export const WeatherHistoryDataView = ({ weatherData }) => {
     const countryCode = weatherData.sys.country;

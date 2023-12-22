@@ -7,6 +7,7 @@ import { Loader } from "components/Loader";
 import { useBackgroundImages, useGeolocation } from 'hooks';
 import styled from '@emotion/styled';
 import 'react-toastify/dist/ReactToastify.css';
+import { textMixin } from "constans";
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,14 +55,12 @@ const Container = styled.div`
     min-height: 100vh;
     margin: 0 auto;
     padding: 0px 15px 15px 15px;
-    background-color: rgb(140, 179, 229);
+    background-color: ${props => props.theme.colors.bgColor};
 `;
 
 const Signature = styled.p`
-text-align: center;
-margin-top: auto;
-font-size: 14px; 
-font-weight: 500; 
-line-height: 1.36; 
-color: #ffffff; 
+  text-align: center;
+  margin-top: auto;
+  ${textMixin('14px', '500', '1.36')};
+  color: ${props => props.theme.colors.white};
 `;
